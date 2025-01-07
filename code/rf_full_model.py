@@ -172,18 +172,18 @@ def train():
 
     print("Sorted Feature Importances:", sorted_feature_importance)
     #save as csv
-    #feature_importance_df = pd.DataFrame.from_dict(sorted_feature_importance, orient='index')
-    #feature_importance_df.to_csv(f".feature_importance_{config.feature_set_tag}_{config.dataset}.csv")
+    feature_importance_df = pd.DataFrame.from_dict(sorted_feature_importance, orient='index')
+    feature_importance_df.to_csv(f"feature_importance_sign_{config.feature_set_tag}_{config.dataset}.csv")
     #plot a bar plot
-    #import matplotlib.pyplot as plt
-    #fig = plt.figure(figsize=(20, 10))
-    #plt.bar(sorted_feature_importance.keys(), sorted_feature_importance.values())
-    #plt.show()
+    import matplotlib.pyplot as plt
+    fig = plt.figure(figsize=(20, 10))
+    plt.bar(sorted_feature_importance.keys(), sorted_feature_importance.values())
+    plt.show()
     #save plot
-    #fig.savefig(f"feature_importance_{config.feature_set_tag}_{config.dataset}.png")
+    fig.savefig(f"feature_importance_sign_{config.feature_set_tag}_{config.dataset}.png")
 
 
-    # wandb.log({"feature_importances": feature_importance_dict})
+    wandb.log({"feature_importances": feature_importance_dict})
 
 
 
@@ -198,16 +198,28 @@ def main():
         'method': 'random',
         'name': 'random_forest_tuning',
         'parameters': {
-            'feature_set_tag': {'values': ['Full', 'Stat']}, # Full, Stat, RF, Quali
-            'dataset': {'values': ['clean', 'normalized']},
-            'n_estimators': {'values': [50,100,250,500,1000,2500]},
-            'max_depth': {'values': [5, 15,30,50,100]},
-            'modalities_combination': {'values': modalities_combinations},
-            'min_samples_split': {'values':[2, 5, 10, 15, 100]},
-            'balanced': {'values': [True, False]},
-            'groundtruth': {'values': ['multi', 'sign']}
+            'feature_set_tag': {'values': ['Full']},#['Full', 'Stat']}, # Full, Stat, RF, Quali
+            'dataset': {'values': ['clean']},#['clean', 'normalized']},
+            'n_estimators': {'values': [250]},#[50,100,250,500,1000,2500]},
+            'max_depth': {'values': [15]},#[5, 15,30,50,100]},
+            'modalities_combination': {'values': [[True,True,True]]},#modalities_combinations},
+            'min_samples_split': {'values':[10]},#[2, 5, 10, 15, 100]},
+            'balanced': {'values': [True]},#[True, False]},
+            'groundtruth': {'values': ['sign']}#['multi', 'sign']}
         }
     }
+
+    #PARAMETERS FOR SIGN
+    #'parameters': {
+    #        'feature_set_tag': {'values': ['Full']},#['Full', 'Stat']}, # Full, Stat, RF, Quali
+    #        'dataset': {'values': ['clean']},#['clean', 'normalized']},
+    #        'n_estimators': {'values': [250]},#[50,100,250,500,1000,2500]},
+    #        'max_depth': {'values': [15]},#[5, 15,30,50,100]},
+    #        'modalities_combination': {'values': [[True,True,True]]},#modalities_combinations},
+    #        'min_samples_split': {'values':[10]},#[2, 5, 10, 15, 100]},
+    #        'balanced': {'values': [True]},#[True, False]},
+    #        'groundtruth': {'values': ['sign']}#['multi', 'sign']}
+    #    }
         
     print(sweep_config)
     

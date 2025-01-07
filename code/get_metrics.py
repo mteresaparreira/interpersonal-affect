@@ -23,7 +23,7 @@ def get_metrics(y_pred, y_true, sessions=None, tolerance=0):
                     start = max(same_session_indices[same_session_indices <= i][-1] - tolerance, same_session_indices[same_session_indices <= i][0])
                 
                 if i == same_session_indices[same_session_indices >= i][-1]:
-                    end = same_session_indices[same_session_indices >= i][-1]
+                    end = same_session_indices[same_session_indices >= i][-1] + 1
                 else:
                     end = min(same_session_indices[same_session_indices >= i][0] + tolerance + 1, same_session_indices[same_session_indices >= i][-1] + 1)
             else:
